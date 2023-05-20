@@ -1,5 +1,6 @@
 const express = require('express')
 const { engine: expressHandlebars } = require('express-handlebars')
+const fortune = require('./lib/fortune')
 
 const app = express()
 
@@ -15,8 +16,7 @@ app.use(express.static(__dirname + '/public'))
 
 app.get('/', (req, res) => res.render('home'))
 app.get('/about', (req, res) => {
-    const randomFortune = fortunes[Math.floor(Math.random()*fortunes.length)]
-    res.render('about', {fortune: randomFortune})
+    res.render('about', {fortune: fortune.getFortune()})
 })
 
 //пользовательская страница 404
@@ -32,11 +32,7 @@ app.use((err, req, res, next) => {
     res.render('500')
 })
 
-const fortunes = [
-    "победи свои страхи, или они победят тебя",
-    "реками нужны истоки",
-    "не бойся неведомого"
-]
+
 
 app.listen(port, () => console.log(
     'Express запущен на http://localhost:${port} \n нажмите Ctrl+C для завершения!'
